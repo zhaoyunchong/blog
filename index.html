@@ -1,12 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    欢迎来到我的网站！
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>计算需要多少一块，五块，十块，一百块</title>
+    <meta name="keywords" content="计算金额，统计几块，生日需要" />
+    <meta type="description" content="女友过生日想送红包，统计需要多少钱" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #000;
+        padding-top: 50px;
+      }
+      div {
+        position: relative;
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 50px;
+      }
+
+      input {
+        width: 300px;
+        font-size: inherit;
+        padding: 10px 0;
+        padding-left: 20px;
+        font-family: inherit;
+        background-color: hsl(236, 32/, 26/);
+        border: 1px solid transparent;
+        transition: background-color 0.3s ease-in-out;
+        color: #000;
+      }
+
+      input:focus {
+        outline: none;
+      }
+
+      input::placeholder {
+        color: hsla(0, 0/, 100/, 0.6);
+      }
+
+      span {
+        position: absolute;
+        background-color: #3cefff;
+        transition: transform 0.5s ease;
+      }
+
+      .bottom,
+      .top {
+        height: 2px;
+        left: 0;
+        right: 0;
+        transform: scaleX(0);
+      }
+
+      .left,
+      .right {
+        width: 2px;
+        top: 0;
+        bottom: 0;
+        transform: scaleY(0);
+      }
+
+      .bottom {
+        bottom: 0;
+        transform-origin: bottom right;
+      }
+
+      input:focus ~ .bottom {
+        transform-origin: bottom left;
+        transform: scaleX(1);
+      }
+
+      .right {
+        right: 0;
+        transform-origin: top right;
+      }
+
+      input:focus ~ .right {
+        transform-origin: bottom right;
+        transform: scaleY(1);
+      }
+
+      .top {
+        top: 0;
+        transform-origin: top left;
+      }
+
+      input:focus ~ .top {
+        transform-origin: top right;
+        transform: scaleX(1);
+      }
+
+      .left {
+        left: 0;
+        transform-origin: bottom left;
+      }
+
+      input:focus ~ .left {
+        transform-origin: top left;
+        transform: scaleY(1);
+      }
+      h2,
+      h5 {
+        color: #fff;
+        text-align: center;
+      }
+      button {
+        display: block;
+        margin: 0 auto;
+        margin-top: 20px;
+        z-index: 1;
+        position: relative;
+        font-size: inherit;
+        font-family: inherit;
+        color: white;
+        padding: 0.5em 1em;
+        outline: none;
+        border: none;
+        background-color: hsl(236, 32%, 26%);
+        overflow: hidden;
+        transition: color 0.4s ease-in-out;
+      }
+
+      button::before {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        top: 100%;
+        left: 100%;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+        background-color: #3cefff;
+        transform-origin: center;
+        transform: translate3d(-50%, -50%, 0) scale3d(0, 0, 0);
+        transition: transform 0.45s ease-in-out;
+      }
+
+      button:hover {
+        cursor: pointer;
+        color: #161616;
+      }
+
+      button:hover::before {
+        transform: translate3d(-50%, -50%, 0) scale3d(15, 15, 15);
+      }
+      p {
+        width: 300px;
+        color: #fff;
+        margin: 0 auto;
+        margin-top: 50px;
+        text-align: center;
+        background: -webkit-linear-gradient(315deg, #42d392 25%, #f00);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>欢迎来到我的网站</h2>
+    <h5>
+      为我女友生日需要，比如计算从1岁到20岁生日，需要几张一块几张十块，几张五十，几张一百(按照一岁加一块的来计算)
+    </h5>
+    <div>
+      <input id="age" type="text" placeholder="请输入年龄" />
+      <span class="bottom"></span>
+      <span class="right"></span>
+      <span class="top"></span>
+      <span class="left"></span>
+    </div>
+    <button>开始计算</button>
+    <p>总共需要</p>
+  </body>
+  <script>
+    const ageInput = document.querySelector("#age");
+    const age = { value: 1 };
+    function operate(n1, n2) {
+      return parseInt(n1 / n2);
+    }
+
+    function calculationAgeNeedMoney(money) {
+      const moneyArray = [1, 5, 10, 20, 50, 100];
+      let hundred = 0,
+        fifty = 0,
+        twenty = 0,
+        ten = 0,
+        five = 0,
+        one = 0;
+      hundred = operate(money, 100);
+      money = money - hundred * 100;
+      fifty = operate(money, 50);
+      money = money - fifty * 50;
+      twenty = operate(money, 20);
+      money = money - twenty * 20;
+      ten = operate(money, 10);
+      money = money - ten * 10;
+      five = operate(money, 5);
+      money = money - five * 5;
+      one = operate(money, 1);
+      return {
+        hundred,
+        fifty,
+        twenty,
+        ten,
+        five,
+        one,
+      };
+    }
+    function coutNumber(n) {
+      let hundred1 = 0,
+        fifty1 = 0,
+        twenty1 = 0,
+        ten1 = 0,
+        five1 = 0,
+        one1 = 0;
+      for (let i = 1; i <= n; i++) {
+        let { hundred, fifty, twenty, ten, five, one } =
+          calculationAgeNeedMoney(i);
+        hundred1 += hundred;
+        fifty1 += fifty;
+        twenty1 += twenty;
+        ten1 += ten;
+        five1 += five;
+        one1 += one;
+      }
+      let str = `你一共要准备`;
+      if (hundred1 > 0) str += `${hundred1}张一百元、`;
+      if (fifty1 > 0) str += `${fifty1}张五十元、`;
+      if (twenty1 > 0) str += `${twenty1}张二十元、`;
+      if (ten1 > 0) str += `${ten1}张十元、`;
+      if (five1 > 0) str += `${five1}张五元、`;
+      if (one1 > 0) str += `${one1}张一元`;
+      return str;
+    }
+
+    document.addEventListener("click", () => {
+      document.querySelector("p").innerHTML = coutNumber(ageInput.value);
+    });
+  </script>
 </html>
